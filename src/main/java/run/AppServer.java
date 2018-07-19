@@ -1,13 +1,14 @@
 package run;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
-import org.springframework.boot.context.properties.EnableConfigurationProperties;
-import org.springframework.cloud.openfeign.EnableFeignClients;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.cloud.client.discovery.DiscoveryClient;
+import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 import org.springframework.context.annotation.ComponentScan;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
 
 /**
  * Created by HowellYang on 19/6/17 PM2:27.
@@ -15,15 +16,24 @@ import org.springframework.web.bind.annotation.RestController;
  */
 
 @ComponentScan("cn.com.alien")
-@Configuration
-@EnableAutoConfiguration
+@EnableDiscoveryClient
 @RestController
-@EnableConfigurationProperties
-@EnableFeignClients
+@SpringBootApplication
 public class AppServer {
-    @RequestMapping("/")
+    @Autowired
+    private DiscoveryClient discoveryClient;
+
+    /**
+     * 获取所有服务
+     */
+    @RequestMapping("/services")
+    public Object services() {
+        return discoveryClient.getServices();
+    }
+
+    @RequestMapping("/home")
     public String home() {
-        return "Hello World";
+        return "Hello World CloudServer";
     }
 
     public static void main(String[] args) {

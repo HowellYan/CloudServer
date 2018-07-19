@@ -5,6 +5,6 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 
 @ConfigurationProperties("sample")
 @Data
-public class SystemProperties {
+public class AppProperties {
     private String prop = "default value";
 }
